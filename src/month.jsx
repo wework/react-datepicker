@@ -22,8 +22,14 @@ var Month = React.createClass({
     onDayMouseEnter: React.PropTypes.func,
     onMouseLeave: React.PropTypes.func,
     peekNextMonth: React.PropTypes.bool,
-    preSelection: React.PropTypes.object,
-    selected: React.PropTypes.object,
+    preSelection: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
+    selected: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
     selectingDate: React.PropTypes.object,
     selectsEnd: React.PropTypes.bool,
     selectsStart: React.PropTypes.bool,

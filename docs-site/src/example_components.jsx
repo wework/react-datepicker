@@ -8,6 +8,7 @@ import CustomClassName from './examples/custom_class_name'
 import CustomCalendarClassName from './examples/custom_calendar_class_name'
 import PlaceholderText from './examples/placeholder_text'
 import SpecificDateRange from './examples/specific_date_range'
+import MultipleSelect from './examples/multiple_select'
 import Locale from './examples/locale'
 import ExcludeDates from './examples/exclude_dates'
 import HighlightDates from './examples/highlight_dates'
@@ -51,134 +52,138 @@ export default React.createClass({
       title: 'Default',
       component: <Default />
     },
+    // {
+    //   title: 'Custom date format',
+    //   component: <CustomDateFormat />
+    // },
+    // {
+    //   title: 'Custom class name',
+    //   component: <CustomClassName />
+    // },
+    // {
+    //   title: 'Custom calendar class name',
+    //   component: <CustomCalendarClassName />
+    // },
+    // {
+    //   title: 'Today button',
+    //   component: <Today />
+    // },
+    // {
+    //   title: `TimeZone date`,
+    //   component: <TimeZoneDate />
+    // },
+    // {
+    //   title: 'Placeholder text',
+    //   component: <PlaceholderText />
+    // },
+    // {
+    //   title: 'Specific date range',
+    //   component: <SpecificDateRange />
+    // },
     {
-      title: 'Custom date format',
-      component: <CustomDateFormat />
+      title: 'Multiple Select',
+      component: <MultipleSelect />
     },
-    {
-      title: 'Custom class name',
-      component: <CustomClassName />
-    },
-    {
-      title: 'Custom calendar class name',
-      component: <CustomCalendarClassName />
-    },
-    {
-      title: 'Today button',
-      component: <Today />
-    },
-    {
-      title: `TimeZone date`,
-      component: <TimeZoneDate />
-    },
-    {
-      title: 'Placeholder text',
-      component: <PlaceholderText />
-    },
-    {
-      title: 'Specific date range',
-      component: <SpecificDateRange />
-    },
-    {
-      title: 'Locale',
-      component: <Locale />
-    },
-    {
-      title: 'Exclude dates',
-      component: <ExcludeDates />
-    },
-    {
-      title: 'Highlight dates',
-      component: <HighlightDates />
-    },
-    {
-      title: 'Include dates',
-      component: <IncludeDates />
-    },
-    {
-      title: 'Filter dates',
-      component: <FilterDates />
-    },
-    {
-      title: 'Date Range',
-      component: <DateRange />
-    },
-    {
-      title: 'Disable datepicker',
-      component: <Disabled />
-    },
-    {
-      title: 'Disable keyboard navigation',
-      component: <DisabledKeyboardNavigation />
-    },
-    {
-      title: 'Clear datepicker input',
-      component: <ClearInput />
-    },
-    {
-      title: 'onBlur callbacks in console',
-      component: <OnBlurCallbacks />
-    },
-    {
-      title: 'Configure Popover Placement',
-      component: <Placement />
-    },
-    {
-      title: 'Portal version',
-      component: <Portal />
-    },
-    {
-      title: 'TabIndex',
-      component: <TabIndex />
-    },
-    {
-      title: 'Year dropdown',
-      component: <YearDropdown />
-    },
-    {
-      title: 'Month dropdown',
-      component: <MonthDropdown />
-    },
-    {
-      title: 'Year select dropdown',
-      component: <YearSelectDropdown />
-    },
-    {
-      title: 'Inline version',
-      component: <Inline />
-    },
-    {
-      title: 'Open to date',
-      component: <OpenToDate />
-    },
-    {
-      title: 'Fixed height of Calendar',
-      component: <FixedCalendar />
-    },
-    {
-      title: 'Display Week Numbers',
-      component: <WeekNumbers />
-    },
-    {
-      title: 'Custom input',
-      component: <CustomInput />
-    },
-    {
-      title: 'Multiple months',
-      component: <MultiMonth />
-    },
-    {
-      title: 'Multiple months with year dropdown',
-      component: <MultiMonthDrp />
-    },
-    {
-      title: 'Children',
-      component: <Children />
-    },
-    {
-      title: 'Get raw input value on change',
-      component: <RawChange/>
-    }
+    // {
+    //   title: 'Locale',
+    //   component: <Locale />
+    // },
+    // {
+    //   title: 'Exclude dates',
+    //   component: <ExcludeDates />
+    // },
+    // {
+    //   title: 'Highlight dates',
+    //   component: <HighlightDates />
+    // },
+    // {
+    //   title: 'Include dates',
+    //   component: <IncludeDates />
+    // },
+    // {
+    //   title: 'Filter dates',
+    //   component: <FilterDates />
+    // },
+    // {
+    //   title: 'Date Range',
+    //   component: <DateRange />
+    // },
+    // {
+    //   title: 'Disable datepicker',
+    //   component: <Disabled />
+    // },
+    // {
+    //   title: 'Disable keyboard navigation',
+    //   component: <DisabledKeyboardNavigation />
+    // },
+    // {
+    //   title: 'Clear datepicker input',
+    //   component: <ClearInput />
+    // },
+    // {
+    //   title: 'onBlur callbacks in console',
+    //   component: <OnBlurCallbacks />
+    // },
+    // {
+    //   title: 'Configure Popover Placement',
+    //   component: <Placement />
+    // },
+    // {
+    //   title: 'Portal version',
+    //   component: <Portal />
+    // },
+    // {
+    //   title: 'TabIndex',
+    //   component: <TabIndex />
+    // },
+    // {
+    //   title: 'Year dropdown',
+    //   component: <YearDropdown />
+    // },
+    // {
+    //   title: 'Month dropdown',
+    //   component: <MonthDropdown />
+    // },
+    // {
+    //   title: 'Year select dropdown',
+    //   component: <YearSelectDropdown />
+    // },
+    // {
+    //   title: 'Inline version',
+    //   component: <Inline />
+    // },
+    // {
+    //   title: 'Open to date',
+    //   component: <OpenToDate />
+    // },
+    // {
+    //   title: 'Fixed height of Calendar',
+    //   component: <FixedCalendar />
+    // },
+    // {
+    //   title: 'Display Week Numbers',
+    //   component: <WeekNumbers />
+    // },
+    // {
+    //   title: 'Custom input',
+    //   component: <CustomInput />
+    // },
+    // {
+    //   title: 'Multiple months',
+    //   component: <MultiMonth />
+    // },
+    // {
+    //   title: 'Multiple months with year dropdown',
+    //   component: <MultiMonthDrp />
+    // },
+    // {
+    //   title: 'Children',
+    //   component: <Children />
+    // },
+    // {
+    //   title: 'Get raw input value on change',
+    //   component: <RawChange/>
+    // }
   ],
 
   renderExamples () {

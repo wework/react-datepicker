@@ -61,7 +61,10 @@ var DatePicker = React.createClass({
     renderCalendarTo: React.PropTypes.any,
     required: React.PropTypes.bool,
     scrollableYearDropdown: React.PropTypes.bool,
-    selected: React.PropTypes.object,
+    selected: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
     selectsEnd: React.PropTypes.bool,
     selectsStart: React.PropTypes.bool,
     showMonthDropdown: React.PropTypes.bool,
@@ -74,7 +77,8 @@ var DatePicker = React.createClass({
     title: React.PropTypes.string,
     todayButton: React.PropTypes.string,
     utcOffset: React.PropTypes.number,
-    withPortal: React.PropTypes.bool
+    withPortal: React.PropTypes.bool,
+    multipleSelect: React.PropTypes.bool,
   },
 
   getDefaultProps () {
@@ -103,10 +107,22 @@ var DatePicker = React.createClass({
   },
 
   getInitialState () {
+    let preSelection
+    if (this.props.multipleSelect) {
+      if (Array.isArray(this.props.selected)) {
+        preSelection = this.props.selected.map((dateSelected) => {
+          return moment(dateSelected)
+        });
+      } else {
+        preSelection = moment()
+      }
+    } else {
+      preSelection = this.props.selected ? moment(this.props.selected) : moment()
+    }
     return {
       open: false,
       preventFocus: false,
-      preSelection: this.props.selected ? moment(this.props.selected) : moment()
+      preSelection
     }
   },
 
@@ -175,7 +191,9 @@ var DatePicker = React.createClass({
       }
     )
     this.setSelected(date, event)
-    this.setOpen(false)
+    if (!this.props.multipleSelect) {
+      this.setOpen(false)
+    }
   },
 
   setSelected (date, event) {
@@ -184,22 +202,37 @@ var DatePicker = React.createClass({
     if (changedDate !== null && isDayDisabled(changedDate, this.props)) {
       return
     }
-
     if (!isSameDay(this.props.selected, changedDate)) {
       if (changedDate !== null) {
-        if (this.props.selected) {
-          changedDate = moment(changedDate).set({
-            hour: this.props.selected.hour(),
-            minute: this.props.selected.minute(),
-            second: this.props.selected.second()
+        if (this.props.multipleSelect) {
+          changedDate = new Array(changedDate);
+          const preSelected = Array.isArray(this.state.preSelection)
+            ? changedDate.concat(this.state.preSelection)
+            : changedDate
+          this.setState({ preSelection: preSelected })
+          this.props.onChange(preSelected, event)
+        } else {
+          this.setState({
+            preSelection: changedDate
           })
+          this.props.onChange(changedDate, event)
         }
-        this.setState({
-          preSelection: changedDate
-        })
       }
-
-      this.props.onChange(changedDate, event)
+    } else {
+      if (changedDate !== null) {
+        if (this.props.multipleSelect) {
+          const preSelected = this.state.preSelection
+          let index;
+          preSelected.find((item, idx) => {
+            if (item.format(`L`) === changedDate.format(`L`)) {
+              index = idx;
+            }
+          });
+          preSelected.splice(index, 1)
+          this.setState({ preSelection: preSelected })
+          this.props.onChange(preSelected, event)
+        }
+      }
     }
   },
 

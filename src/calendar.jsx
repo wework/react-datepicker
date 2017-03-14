@@ -4,7 +4,7 @@ import MonthDropdown from './month_dropdown'
 import Month from './month'
 import React from 'react'
 import classnames from 'classnames'
-import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate } from './date_utils'
+import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate, getMinimumDate } from './date_utils'
 
 const DROPDOWN_FOCUS_CLASSNAMES = [
   'react-datepicker__year-select',
@@ -46,8 +46,14 @@ var Calendar = React.createClass({
     openToDate: React.PropTypes.object,
     peekNextMonth: React.PropTypes.bool,
     scrollableYearDropdown: React.PropTypes.bool,
-    preSelection: React.PropTypes.object,
-    selected: React.PropTypes.object,
+    preSelection: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
+    selected: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
     selectsEnd: React.PropTypes.bool,
     selectsStart: React.PropTypes.bool,
     showMonthDropdown: React.PropTypes.bool,
@@ -78,9 +84,13 @@ var Calendar = React.createClass({
   },
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.preSelection && !isSameDay(nextProps.preSelection, this.props.preSelection)) {
+    let preSelectDate = nextProps.preSelection
+    if (preSelectDate && Array.isArray(preSelectDate)) {
+      preSelectDate = getMinimumDate(nextProps.preSelection)
+    }
+    if (preSelectDate && !isSameDay(preSelectDate, this.props.preSelection)) {
       this.setState({
-        date: this.localizeMoment(nextProps.preSelection)
+        date: this.localizeMoment(preSelectDate)
       })
     } else if (nextProps.openToDate && !isSameDay(nextProps.openToDate, this.props.openToDate)) {
       this.setState({
@@ -106,6 +116,9 @@ var Calendar = React.createClass({
     const current = moment.utc().utcOffset(utcOffset)
     const initialDate = preSelection || selected
     if (initialDate) {
+      if (Array.isArray(initialDate)) {
+        return initialDate[0]
+      }
       return initialDate
     } else if (minDate && maxDate && openToDate && openToDate.isBetween(minDate, maxDate)) {
       return openToDate
@@ -125,6 +138,9 @@ var Calendar = React.createClass({
   },
 
   localizeMoment (date) {
+    if (Array.isArray(date)) {
+      date = getMinimumDate(date)
+    }
     return date.clone().locale(this.props.locale || moment.locale())
   },
 

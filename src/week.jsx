@@ -18,8 +18,14 @@ var Week = React.createClass({
     month: React.PropTypes.number,
     onDayClick: React.PropTypes.func,
     onDayMouseEnter: React.PropTypes.func,
-    preSelection: React.PropTypes.object,
-    selected: React.PropTypes.object,
+    preSelection: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
+    selected: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
     selectingDate: React.PropTypes.object,
     selectsEnd: React.PropTypes.bool,
     selectsStart: React.PropTypes.bool,

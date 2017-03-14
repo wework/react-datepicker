@@ -14,19 +14,27 @@ var Day = React.createClass({
     month: React.PropTypes.number,
     onClick: React.PropTypes.func,
     onMouseEnter: React.PropTypes.func,
-    preSelection: React.PropTypes.object,
-    selected: React.PropTypes.object,
+    preSelection: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
+    selected: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object)
+    ]),
     selectingDate: React.PropTypes.object,
     selectsEnd: React.PropTypes.bool,
     selectsStart: React.PropTypes.bool,
     startDate: React.PropTypes.object,
     utcOffset: React.PropTypes.number
   },
+
   getDefaultProps () {
     return {
       utcOffset: moment.utc().utcOffset()
     }
   },
+
   handleClick (event) {
     if (!this.isDisabled() && this.props.onClick) {
       this.props.onClick(event)
