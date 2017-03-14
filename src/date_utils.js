@@ -91,17 +91,21 @@ export function getEffectiveMaxDate ({ maxDate, includeDates }) {
 }
 
 export function getMinimumDate (dates) {
-  return dates.reduce((pre, current) => {
-    return (pre.unix() - current.unix()) > 0
-      ? current
-      : pre
-  })
+  if (dates && dates.length) {
+    return dates.reduce((pre, current) => {
+      return (pre.unix() - current.unix()) > 0
+        ? current
+        : pre
+    })
+  } 
 }
 
 export function getMaximunDate (dates) {
-  return dates.reduce((pre, current) => {
-    return (pre.unix() - current.unix()) < 0
-      ? current
-      : pre
-  })
+  if (dates && dates.length) {
+    return dates.reduce((pre, current) => {
+      return (pre.unix() - current.unix()) < 0
+        ? current
+        : pre
+    })
+  }
 }
