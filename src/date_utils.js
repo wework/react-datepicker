@@ -36,6 +36,7 @@ export function isSameUtcOffset (moment1, moment2) {
 }
 
 export function isDayInRange (day, startDate, endDate) {
+  if (!day) return false;
   const before = startDate.clone().startOf('day').subtract(1, 'seconds')
   const after = endDate.clone().startOf('day').add(1, 'seconds')
   return day.clone().startOf('day').isBetween(before, after)
@@ -97,7 +98,7 @@ export function getMinimumDate (dates) {
         ? current
         : pre
     })
-  } 
+  }
 }
 
 export function getMaximunDate (dates) {

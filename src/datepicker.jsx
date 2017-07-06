@@ -361,6 +361,7 @@ var DatePicker = React.createClass({
     var className = classnames(this.props.className, {
       [outsideClickIgnoreClass]: this.state.open
     })
+
     return <DateInput
         ref="input"
         id={this.props.id}
@@ -388,7 +389,8 @@ var DatePicker = React.createClass({
         readOnly={this.props.readOnly}
         required={this.props.required}
         tabIndex={this.props.tabIndex}
-        customInput={this.props.customInput} />
+        customInput={this.props.customInput}
+        multipleSelect={this.props.multipleSelect}/>
   },
 
   renderClearButton () {

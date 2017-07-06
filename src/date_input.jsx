@@ -7,7 +7,10 @@ var DateInput = React.createClass({
 
   propTypes: {
     customInput: React.PropTypes.element,
-    date: React.PropTypes.object,
+    date: React.PropTypes.oneOfType([
+      React.PropTypes.object,
+      React.PropTypes.arrayOf(React.PropTypes.object),
+    ]),
     dateFormat: React.PropTypes.oneOfType([
       React.PropTypes.string,
       React.PropTypes.array
@@ -22,7 +25,8 @@ var DateInput = React.createClass({
     onBlur: React.PropTypes.func,
     onChange: React.PropTypes.func,
     onChangeRaw: React.PropTypes.func,
-    onChangeDate: React.PropTypes.func
+    onChangeDate: React.PropTypes.func,
+    multipleSelect: React.PropTypes.bool
   },
 
   getDefaultProps () {
@@ -38,14 +42,7 @@ var DateInput = React.createClass({
   },
 
   componentWillReceiveProps (newProps) {
-    if (!isSameDay(newProps.date, this.props.date) ||
-        !isSameUtcOffset(newProps.date, this.props.date) ||
-          newProps.locale !== this.props.locale ||
-          newProps.dateFormat !== this.props.dateFormat) {
-      this.setState({
-        value: this.safeDateFormat(newProps)
-      })
-    }
+    this.setState({ value: this.safeDateFormat(newProps) });
   },
 
   handleChange (event) {
@@ -73,9 +70,16 @@ var DateInput = React.createClass({
   },
 
   safeDateFormat (props) {
-    return props.date && props.date.clone()
-      .locale(props.locale || moment.locale())
-      .format(Array.isArray(props.dateFormat) ? props.dateFormat[0] : props.dateFormat) || ''
+    const dateOrDates = Array.isArray(props.date) ? props.date.filter(d => d && d.isValid()) : props.date;
+    return dateOrDates && (this.props.multipleSelect ? dateOrDates.map(this.formatDate(props)) : this.formatDate(props)(dateOrDates));
+  },
+
+  formatDate(props) {
+    return (date) => (
+      date.clone()
+        .locale(props.locale || moment.locale())
+        .format(Array.isArray(props.dateFormat) ? props.dateFormat[0] : props.dateFormat) || ''
+    );
   },
 
   handleBlur (event) {
@@ -92,7 +96,7 @@ var DateInput = React.createClass({
   },
 
   render () {
-    const { customInput, date, locale, minDate, maxDate, excludeDates, includeDates, filterDate, dateFormat, onChangeDate, onChangeRaw, ...rest } = this.props // eslint-disable-line no-unused-vars
+    const { multipleSelect, customInput, date, locale, minDate, maxDate, excludeDates, includeDates, filterDate, dateFormat, onChangeDate, onChangeRaw, ...rest } = this.props // eslint-disable-line no-unused-vars
 
     if (customInput) {
       return React.cloneElement(customInput, {
