@@ -203,20 +203,18 @@ var DatePicker = React.createClass({
       return
     }
     if (!isSameDay(this.props.selected, changedDate)) {
-      if (changedDate !== null) {
-        if (this.props.multipleSelect) {
-          changedDate = new Array(changedDate);
-          const preSelected = Array.isArray(this.state.preSelection)
-            ? changedDate.concat(this.state.preSelection)
-            : changedDate
-          this.setState({ preSelection: preSelected })
-          this.props.onChange(preSelected, event)
-        } else {
-          this.setState({
-            preSelection: changedDate
-          })
-          this.props.onChange(changedDate, event)
-        }
+      if (this.props.multipleSelect) {
+        changedDate = new Array(changedDate);
+        const preSelected = Array.isArray(this.state.preSelection)
+          ? changedDate.concat(this.state.preSelection)
+          : changedDate
+        this.setState({ preSelection: preSelected })
+        this.props.onChange(preSelected, event)
+      } else {
+        this.setState({
+          preSelection: changedDate
+        })
+        this.props.onChange(changedDate, event)
       }
     } else {
       if (changedDate !== null) {

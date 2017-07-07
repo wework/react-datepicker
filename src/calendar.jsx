@@ -138,8 +138,11 @@ var Calendar = React.createClass({
   },
 
   localizeMoment (date) {
+    if (!date) return moment();
+
     if (Array.isArray(date)) {
-      date = getMinimumDate(date)
+      date = getMinimumDate(date);
+      if (!date) return moment();
     }
     return date.clone().locale(this.props.locale || moment.locale())
   },

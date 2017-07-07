@@ -47,7 +47,13 @@ var Week = React.createClass({
   },
 
   renderDays () {
-    const startOfWeek = this.props.day.clone().startOf('week')
+    const startOfWeek = this.props.day
+      .clone()
+      .startOf('week')
+      .hours(this.props.day.hours())
+      .minutes(this.props.day.minutes())
+      .seconds(this.props.day.seconds());
+
     const days = []
     if (this.props.showWeekNumber) {
       days.push(<WeekNumber key="W" weekNumber={parseInt(startOfWeek.format('w'), 10)} />)

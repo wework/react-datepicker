@@ -65,7 +65,14 @@ var Month = React.createClass({
   renderWeeks () {
     const weeks = []
     var isFixedHeight = this.props.fixedHeight
-    let currentWeekStart = this.props.day.clone().startOf('month').startOf('week')
+    let currentWeekStart = this.props.day
+      .clone()
+      .startOf('month')
+      .startOf('week')
+      .hours(this.props.day.hours())
+      .minutes(this.props.day.minutes())
+      .seconds(this.props.day.seconds())
+
     let i = 0
     let breakAfterNextPush = false
 

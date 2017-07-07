@@ -71,6 +71,7 @@ var DateInput = React.createClass({
 
   safeDateFormat (props) {
     const dateOrDates = Array.isArray(props.date) ? props.date.filter(d => d && d.isValid()) : props.date;
+    if (!dateOrDates) return '';
     return dateOrDates && (this.props.multipleSelect ? dateOrDates.map(this.formatDate(props)) : this.formatDate(props)(dateOrDates));
   },
 
