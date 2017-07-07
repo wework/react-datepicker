@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import React from 'react'
+import React, { Component } from 'react'
 
-var WeekNumber = React.createClass({
-  displayName: 'WeekNumber',
+export default class WeekNumber extends Component {
+  static displayName = 'WeekNumber';
 
-  propTypes: {
+  static propTypes = {
     weekNumber: PropTypes.number.isRequired
-  },
+  };
 
-  render () {
+  render() {
     return (
       <div
           className="react-datepicker__week-number"
@@ -17,6 +17,4 @@ var WeekNumber = React.createClass({
       </div>
     )
   }
-})
-
-module.exports = WeekNumber
+}

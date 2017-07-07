@@ -33,8 +33,8 @@ export default React.createClass({
             minDate={moment()}
             maxDate={moment().add(2, 'month')}
             selected={this.state.startDate}
-            onChange={this.handleChange} 
-            multipleSelect={true} />
+            onChange={this.handleChange}
+            multipleSelect />
       </div>
     </div>
   }

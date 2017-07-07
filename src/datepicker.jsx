@@ -1,7 +1,8 @@
 import DateInput from './date_input'
 import Calendar from './calendar'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import React from 'react'
+import createReactClass from 'create-react-class'
 import TetherComponent from './tether_component'
 import classnames from 'classnames'
 import {isSameDay, isDayDisabled, isDayInRange} from './date_utils'
@@ -15,7 +16,7 @@ var WrappedCalendar = onClickOutside(Calendar)
  * General datepicker component.
  */
 
-var DatePicker = React.createClass({
+export default createReactClass({
   displayName: 'DatePicker',
 
   propTypes: {
@@ -79,7 +80,7 @@ var DatePicker = React.createClass({
     todayButton: PropTypes.string,
     utcOffset: PropTypes.number,
     withPortal: PropTypes.bool,
-    multipleSelect: PropTypes.bool,
+    multipleSelect: PropTypes.bool
   },
 
   getDefaultProps () {
@@ -113,7 +114,7 @@ var DatePicker = React.createClass({
       if (Array.isArray(this.props.selected)) {
         preSelection = this.props.selected.map((dateSelected) => {
           return moment(dateSelected)
-        });
+        })
       } else {
         preSelection = moment()
       }
@@ -205,7 +206,7 @@ var DatePicker = React.createClass({
     }
     if (!isSameDay(this.props.selected, changedDate)) {
       if (this.props.multipleSelect) {
-        changedDate = new Array(changedDate);
+        changedDate = new Array(changedDate)
         const preSelected = Array.isArray(this.state.preSelection)
           ? changedDate.concat(this.state.preSelection)
           : changedDate
@@ -221,12 +222,12 @@ var DatePicker = React.createClass({
       if (changedDate !== null) {
         if (this.props.multipleSelect) {
           const preSelected = this.state.preSelection
-          let index;
+          let index
           preSelected.find((item, idx) => {
             if (item.format(`L`) === changedDate.format(`L`)) {
-              index = idx;
+              index = idx
             }
-          });
+          })
           preSelected.splice(index, 1)
           this.setState({ preSelection: preSelected })
           this.props.onChange(preSelected, event)
@@ -442,5 +443,3 @@ var DatePicker = React.createClass({
     )
   }
 })
-
-module.exports = DatePicker

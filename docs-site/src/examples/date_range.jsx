@@ -1,8 +1,9 @@
 var React = require('react')
+var createReactClass = require('create-react-class')
 var DatePicker = require('react-datepicker')
 var moment = require('moment')
 
-var DateRange = React.createClass({
+var DateRange = createReactClass({
   displayName: 'DateRange',
 
   getInitialState: function () {

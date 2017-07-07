@@ -474,7 +474,7 @@ describe('DatePicker', () => {
   })
 
   it('should correctly clear date with empty input string', () => {
-    let date;
+    let date
     function handleChange (d) {
       // Internally DateInput calls it's onChange prop with null
       // when the input value is an empty string

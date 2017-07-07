@@ -2,8 +2,9 @@ import moment from 'moment'
 import YearDropdown from './year_dropdown'
 import MonthDropdown from './month_dropdown'
 import Month from './month'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import React from 'react'
+import createReactClass from 'create-react-class'
 import classnames from 'classnames'
 import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate, getMinimumDate } from './date_utils'
 
@@ -17,7 +18,7 @@ const isDropdownSelect = (element = {}) => {
   return DROPDOWN_FOCUS_CLASSNAMES.some(testClassname => classNames.indexOf(testClassname) >= 0)
 }
 
-var Calendar = React.createClass({
+export default createReactClass({
   displayName: 'Calendar',
 
   propTypes: {
@@ -139,11 +140,11 @@ var Calendar = React.createClass({
   },
 
   localizeMoment (date) {
-    if (!date) return moment();
+    if (!date) return moment()
 
     if (Array.isArray(date)) {
-      date = getMinimumDate(date);
-      if (!date) return moment();
+      date = getMinimumDate(date)
+      if (!date) return moment()
     }
     return date.clone().locale(this.props.locale || moment.locale())
   },
@@ -343,5 +344,3 @@ var Calendar = React.createClass({
     )
   }
 })
-
-module.exports = Calendar

@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import React from 'react'
+import React, { Component } from 'react'
 import classnames from 'classnames'
 import Week from './week'
 
 const FIXED_HEIGHT_STANDARD_WEEK_COUNT = 6
 
-var Month = React.createClass({
-  displayName: 'Month',
+export default class Month extends Component {
+  static displayName = 'Month';
 
-  propTypes: {
+  static propTypes = {
     day: PropTypes.object.isRequired,
     endDate: PropTypes.object,
     excludeDates: PropTypes.array,
@@ -37,33 +37,33 @@ var Month = React.createClass({
     showWeekNumbers: PropTypes.bool,
     startDate: PropTypes.object,
     utcOffset: PropTypes.number
-  },
+  };
 
-  handleDayClick (day, event) {
+  handleDayClick = (day, event) => {
     if (this.props.onDayClick) {
       this.props.onDayClick(day, event)
     }
-  },
+  };
 
-  handleDayMouseEnter (day) {
+  handleDayMouseEnter = (day) => {
     if (this.props.onDayMouseEnter) {
       this.props.onDayMouseEnter(day)
     }
-  },
+  };
 
-  handleMouseLeave () {
+  handleMouseLeave = () => {
     if (this.props.onMouseLeave) {
       this.props.onMouseLeave()
     }
-  },
+  };
 
-  isWeekInMonth (startOfWeek) {
+  isWeekInMonth = (startOfWeek) => {
     const day = this.props.day
     const endOfWeek = startOfWeek.clone().add(6, 'days')
     return startOfWeek.isSame(day, 'month') || endOfWeek.isSame(day, 'month')
-  },
+  };
 
-  renderWeeks () {
+  renderWeeks = () => {
     const weeks = []
     var isFixedHeight = this.props.fixedHeight
     let currentWeekStart = this.props.day
@@ -121,23 +121,20 @@ var Month = React.createClass({
     }
 
     return weeks
-  },
+  };
 
-  getClassNames () {
+  getClassNames = () => {
     const { selectingDate, selectsStart, selectsEnd } = this.props
     return classnames('react-datepicker__month', {
       'react-datepicker__month--selecting-range': selectingDate && (selectsStart || selectsEnd)
     })
-  },
+  };
 
-  render () {
+  render() {
     return (
       <div className={this.getClassNames()} onMouseLeave={this.handleMouseLeave} role="listbox">
         {this.renderWeeks()}
       </div>
     )
   }
-
-})
-
-module.exports = Month
+}

@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
-import React from 'react'
+import React, { Component } from 'react'
 
-var MonthDropdownOptions = React.createClass({
-  displayName: 'MonthDropdownOptions',
+export default class MonthDropdownOptions extends Component {
+  static displayName = 'MonthDropdownOptions';
 
-  propTypes: {
+  static propTypes = {
     onCancel: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     month: PropTypes.number.isRequired,
     monthNames: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
-  },
+  };
 
-  renderOptions () {
+  renderOptions = () => {
     var selectedMonth = this.props.month
     var options = this.props.monthNames.map((month, i) =>
       <div className="react-datepicker__month-option"
@@ -24,23 +24,21 @@ var MonthDropdownOptions = React.createClass({
     )
 
     return options
-  },
+  };
 
-  onChange (month) {
+  onChange = (month) => {
     this.props.onChange(month)
-  },
+  };
 
-  handleClickOutside () {
+  handleClickOutside = () => {
     this.props.onCancel()
-  },
+  };
 
-  render () {
+  render() {
     return (
       <div className="react-datepicker__month-dropdown">
         {this.renderOptions()}
       </div>
     )
   }
-})
-
-module.exports = MonthDropdownOptions
+}
