@@ -66,15 +66,17 @@ export default class DateInput extends Component {
   safeDateFormat = (props) => {
     const dateOrDates = Array.isArray(props.date) ? props.date.filter(d => d && d.isValid()) : props.date;
     if (!dateOrDates) return '';
-    return dateOrDates && (this.props.multipleSelect ? map(dateOrDates, this.formatDate(props)) : this.formatDate(props)(dateOrDates));
+    return dateOrDates && (Array.isArray(dateOrDates) ? map(dateOrDates, this.formatDate(props)) : this.formatDate(props)(dateOrDates));
   };
 
   formatDate = (props) => {
-    return (date) => (
-      date.clone()
+    return (date) => {
+      const momentifiedDate = moment(date)
+      if (!momentifiedDate.isValid()) return ''
+      return momentifiedDate.clone()
         .locale(props.locale || moment.locale())
         .format(Array.isArray(props.dateFormat) ? props.dateFormat[0] : props.dateFormat) || ''
-    );
+    };
   };
 
   handleBlur = (event) => {
