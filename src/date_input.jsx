@@ -1,6 +1,7 @@
 import moment from 'moment'
 import React from 'react'
 import { isSameDay, isDayDisabled, isSameUtcOffset } from './date_utils'
+import map from 'lodash/map';
 
 var DateInput = React.createClass({
   displayName: 'DateInput',
@@ -72,7 +73,7 @@ var DateInput = React.createClass({
   safeDateFormat (props) {
     const dateOrDates = Array.isArray(props.date) ? props.date.filter(d => d && d.isValid()) : props.date;
     if (!dateOrDates) return '';
-    return dateOrDates && (this.props.multipleSelect ? dateOrDates.map(this.formatDate(props)) : this.formatDate(props)(dateOrDates));
+    return dateOrDates && (this.props.multipleSelect ? map(dateOrDates, this.formatDate(props)) : this.formatDate(props)(dateOrDates));
   },
 
   formatDate(props) {
