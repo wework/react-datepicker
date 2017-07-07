@@ -2,7 +2,7 @@
   "author": "HackerOne (edit by Side) (edit by WeWork)",
   "name": "multiple-react-datepicker",
   "description": "A simple and reusable datepicker component for React",
-  "version": "0.41.8",
+  "version": "0.41.9",
   "license": "MIT",
   "homepage": "https://github.com/wework/react-datepicker",
   "main": "dist/react-datepicker.min.js",
