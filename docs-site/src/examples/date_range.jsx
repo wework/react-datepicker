@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import createReactClass from 'create-react-class'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 

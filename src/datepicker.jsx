@@ -1,13 +1,13 @@
 import DateInput from './date_input'
 import Calendar from './calendar'
 import PropTypes from 'prop-types'
-import React from 'react'
-import createReactClass from 'create-react-class'
+import React, { Component } from 'react'
 import TetherComponent from './tether_component'
 import classnames from 'classnames'
 import {isSameDay, isDayDisabled, isDayInRange} from './date_utils'
 import moment from 'moment'
 import onClickOutside from 'react-onclickoutside'
+import map from 'lodash/map'
 
 var outsideClickIgnoreClass = 'react-datepicker-ignore-onclickoutside'
 var WrappedCalendar = onClickOutside(Calendar)
@@ -16,10 +16,10 @@ var WrappedCalendar = onClickOutside(Calendar)
  * General datepicker component.
  */
 
-export default createReactClass({
-  displayName: 'DatePicker',
+export default class DatePicker extends Component {
+  static displayName = 'DatePicker';
 
-  propTypes: {
+  static propTypes = {
     autoComplete: PropTypes.string,
     autoFocus: PropTypes.bool,
     calendarClassName: PropTypes.string,
@@ -81,38 +81,61 @@ export default createReactClass({
     utcOffset: PropTypes.number,
     withPortal: PropTypes.bool,
     multipleSelect: PropTypes.bool
-  },
+  };
 
-  getDefaultProps () {
-    return {
-      dateFormatCalendar: 'MMMM YYYY',
-      onChange () {},
-      disabled: false,
-      disabledKeyboardNavigation: false,
-      dropdownMode: 'scroll',
-      onFocus () {},
-      onBlur () {},
-      onMonthChange () {},
-      popoverAttachment: 'top left',
-      popoverTargetAttachment: 'bottom left',
-      popoverTargetOffset: '10px 0',
-      tetherConstraints: [
-        {
-          to: 'window',
-          attachment: 'together'
-        }
-      ],
-      utcOffset: moment().utcOffset(),
-      monthsShown: 1,
-      withPortal: false
-    }
-  },
+  static defaultProps = {
+    dateFormatCalendar: 'MMMM YYYY',
+    onChange () {},
+    disabled: false,
+    disabledKeyboardNavigation: false,
+    dropdownMode: 'scroll',
+    onFocus () {},
+    onBlur () {},
+    onMonthChange () {},
+    popoverAttachment: 'top left',
+    popoverTargetAttachment: 'bottom left',
+    popoverTargetOffset: '10px 0',
+    tetherConstraints: [
+      {
+        to: 'window',
+        attachment: 'together'
+      }
+    ],
+    utcOffset: moment().utcOffset(),
+    monthsShown: 1,
+    withPortal: false
+  };
 
-  getInitialState () {
+  constructor(props) {
+    super(props)
+
     let preSelection
+
+    if (props.multipleSelect) {
+      if (Array.isArray(props.selected)) {
+        preSelection = map(props.selected, (dateSelected) => {
+          return moment(dateSelected)
+        })
+      } else {
+        preSelection = moment()
+      }
+    } else {
+      preSelection = props.selected ? moment(props.selected) : moment()
+    }
+
+    this.state = this.initialState()
+  }
+
+  componentWillUnmount () {
+    this.clearPreventFocusTimeout()
+  }
+
+  initialState = () => {
+    let preSelection
+
     if (this.props.multipleSelect) {
       if (Array.isArray(this.props.selected)) {
-        preSelection = this.props.selected.map((dateSelected) => {
+        preSelection = map(this.props.selected, (dateSelected) => {
           return moment(dateSelected)
         })
       } else {
@@ -121,69 +144,66 @@ export default createReactClass({
     } else {
       preSelection = this.props.selected ? moment(this.props.selected) : moment()
     }
+
     return {
       open: false,
       preventFocus: false,
       preSelection
-    }
-  },
+    };
+  };
 
-  componentWillUnmount () {
-    this.clearPreventFocusTimeout()
-  },
-
-  clearPreventFocusTimeout () {
+  clearPreventFocusTimeout = () => {
     if (this.preventFocusTimeout) {
       clearTimeout(this.preventFocusTimeout)
     }
-  },
+  };
 
-  setFocus () {
+  setFocus = () => {
     this.refs.input.focus()
-  },
+  };
 
-  setOpen (open) {
+  setOpen = (open) => {
     this.setState({
       open: open,
-      preSelection: open && this.state.open ? this.state.preSelection : this.getInitialState().preSelection
+      preSelection: open && this.state.open ? this.state.preSelection : this.initialState().preSelection
     })
-  },
+  };
 
-  handleFocus (event) {
+  handleFocus = (event) => {
     if (!this.state.preventFocus) {
       this.props.onFocus(event)
       this.setOpen(true)
     }
-  },
+  };
 
-  cancelFocusInput () {
+  cancelFocusInput = () => {
     clearTimeout(this.inputFocusTimeout)
     this.inputFocusTimeout = null
-  },
+  };
 
-  deferFocusInput () {
+  deferFocusInput = () => {
     this.cancelFocusInput()
     this.inputFocusTimeout = window.setTimeout(() => this.setFocus(), 1)
-  },
+  };
 
-  handleDropdownFocus () {
+  handleDropdownFocus = () => {
     this.cancelFocusInput()
-  },
+  };
 
-  handleBlur (event) {
+  handleBlur = (event) => {
     if (this.state.open) {
       this.deferFocusInput()
     } else {
       this.props.onBlur(event)
     }
-  },
+  };
 
-  handleCalendarClickOutside (event) {
+  handleCalendarClickOutside = (event) => {
     this.setOpen(false)
     if (this.props.withPortal) { event.preventDefault() }
-  },
+  };
 
-  handleSelect (date, event) {
+  handleSelect = (date, event) => {
     // Preventing onFocus event to fix issue
     // https://github.com/Hacker0x01/react-datepicker/issues/628
     this.setState({ preventFocus: true },
@@ -196,9 +216,9 @@ export default createReactClass({
     if (!this.props.multipleSelect) {
       this.setOpen(false)
     }
-  },
+  };
 
-  setSelected (date, event) {
+  setSelected = (date, event) => {
     let changedDate = date
 
     if (changedDate !== null && isDayDisabled(changedDate, this.props)) {
@@ -234,9 +254,9 @@ export default createReactClass({
         }
       }
     }
-  },
+  };
 
-  setPreSelection (date) {
+  setPreSelection = (date) => {
     const isDateRangePresent = ((typeof this.props.minDate !== 'undefined') && (typeof this.props.maxDate !== 'undefined'))
     const isValidDateSelection = isDateRangePresent ? isDayInRange(date, this.props.minDate, this.props.maxDate) : true
     if (isValidDateSelection) {
@@ -244,15 +264,15 @@ export default createReactClass({
         preSelection: date
       })
     }
-  },
+  };
 
-  onInputClick () {
+  onInputClick = () => {
     if (!this.props.disabled) {
       this.setOpen(true)
     }
-  },
+  };
 
-  onInputKeyDown (event) {
+  onInputKeyDown = (event) => {
     if (!this.state.open && !this.props.inline) {
       if (/^Arrow/.test(event.key)) {
         this.onInputClick()
@@ -307,14 +327,14 @@ export default createReactClass({
       }
       this.setPreSelection(newSelection)
     }
-  },
+  };
 
-  onClearClick (event) {
+  onClearClick = (event) => {
     event.preventDefault()
     this.props.onChange(null, event)
-  },
+  };
 
-  renderCalendar () {
+  renderCalendar = () => {
     if (!this.props.inline && (!this.state.open || this.props.disabled)) {
       return null
     }
@@ -355,9 +375,9 @@ export default createReactClass({
         className={this.props.calendarClassName}>
       {this.props.children}
     </WrappedCalendar>
-  },
+  };
 
-  renderDateInput () {
+  renderDateInput = () => {
     var className = classnames(this.props.className, {
       [outsideClickIgnoreClass]: this.state.open
     })
@@ -391,17 +411,17 @@ export default createReactClass({
         tabIndex={this.props.tabIndex}
         customInput={this.props.customInput}
         multipleSelect={this.props.multipleSelect}/>
-  },
+  };
 
-  renderClearButton () {
+  renderClearButton = () => {
     if (this.props.isClearable && this.props.selected != null) {
       return <a className="react-datepicker__close-icon" href="#" onClick={this.onClearClick} />
     } else {
       return null
     }
-  },
+  };
 
-  render () {
+  render() {
     const calendar = this.renderCalendar()
 
     if (this.props.inline) {
@@ -442,4 +462,4 @@ export default createReactClass({
       </TetherComponent>
     )
   }
-})
+}

@@ -3,8 +3,7 @@ import YearDropdown from './year_dropdown'
 import MonthDropdown from './month_dropdown'
 import Month from './month'
 import PropTypes from 'prop-types'
-import React from 'react'
-import createReactClass from 'create-react-class'
+import React, { Component } from 'react'
 import classnames from 'classnames'
 import { isSameDay, allDaysDisabledBefore, allDaysDisabledAfter, getEffectiveMinDate, getEffectiveMaxDate, getMinimumDate } from './date_utils'
 
@@ -18,10 +17,10 @@ const isDropdownSelect = (element = {}) => {
   return DROPDOWN_FOCUS_CLASSNAMES.some(testClassname => classNames.indexOf(testClassname) >= 0)
 }
 
-export default createReactClass({
-  displayName: 'Calendar',
+export default class Calendar extends Component {
+  static displayName = 'Calendar';
 
-  propTypes: {
+  static propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     dateFormat: PropTypes.oneOfType([
@@ -64,28 +63,25 @@ export default createReactClass({
     startDate: PropTypes.object,
     todayButton: PropTypes.string,
     utcOffset: PropTypes.number
-  },
+  };
 
-  defaultProps: {
-    onDropdownFocus: () => {}
-  },
+  static defaultProps = {
+    onDropdownFocus: () => {},
+    utcOffset: moment.utc().utcOffset(),
+    monthsShown: 1,
+    forceShowMonthNavigation: false
+  };
 
-  getDefaultProps () {
-    return {
-      utcOffset: moment.utc().utcOffset(),
-      monthsShown: 1,
-      forceShowMonthNavigation: false
-    }
-  },
 
-  getInitialState () {
-    return {
+  constructor(props) {
+    super(props)
+    this.state = {
       date: this.localizeMoment(this.getDateInView()),
       selectingDate: null
     }
-  },
+  }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     let preSelectDate = nextProps.preSelection
     if (preSelectDate && Array.isArray(preSelectDate)) {
       preSelectDate = getMinimumDate(nextProps.preSelection)
@@ -99,19 +95,19 @@ export default createReactClass({
         date: this.localizeMoment(nextProps.openToDate)
       })
     }
-  },
+  }
 
-  handleClickOutside (event) {
+  handleClickOutside = (event) => {
     this.props.onClickOutside(event)
-  },
+  };
 
-  handleDropdownFocus (event) {
+  handleDropdownFocus = (event) => {
     if (isDropdownSelect(event.target)) {
       this.props.onDropdownFocus()
     }
-  },
+  };
 
-  getDateInView () {
+  getDateInView = () => {
     const { preSelection, selected, openToDate, utcOffset } = this.props
     const minDate = getEffectiveMinDate(this.props)
     const maxDate = getEffectiveMaxDate(this.props)
@@ -137,9 +133,9 @@ export default createReactClass({
     } else {
       return current
     }
-  },
+  };
 
-  localizeMoment (date) {
+  localizeMoment = (date) => {
     if (!date) return moment()
 
     if (Array.isArray(date)) {
@@ -147,51 +143,51 @@ export default createReactClass({
       if (!date) return moment()
     }
     return date.clone().locale(this.props.locale || moment.locale())
-  },
+  };
 
-  increaseMonth () {
+  increaseMonth = () => {
     this.setState({
       date: this.state.date.clone().add(1, 'month')
     }, () => this.handleMonthChange(this.state.date))
-  },
+  };
 
-  decreaseMonth () {
+  decreaseMonth = () => {
     this.setState({
       date: this.state.date.clone().subtract(1, 'month')
     }, () => this.handleMonthChange(this.state.date))
-  },
+  };
 
-  handleDayClick (day, event) {
+  handleDayClick = (day, event) => {
     this.props.onSelect(day, event)
-  },
+  };
 
-  handleDayMouseEnter (day) {
+  handleDayMouseEnter = (day) => {
     this.setState({ selectingDate: day })
-  },
+  };
 
-  handleMonthMouseLeave () {
+  handleMonthMouseLeave = () => {
     this.setState({ selectingDate: null })
-  },
+  };
 
-  handleMonthChange (date) {
+  handleMonthChange = (date) => {
     if (this.props.onMonthChange) {
       this.props.onMonthChange(date)
     }
-  },
+  };
 
-  changeYear (year) {
+  changeYear = (year) => {
     this.setState({
       date: this.state.date.clone().set('year', year)
     })
-  },
+  };
 
-  changeMonth (month) {
+  changeMonth = (month) => {
     this.setState({
       date: this.state.date.clone().set('month', month)
     }, () => this.handleMonthChange(this.state.date))
-  },
+  };
 
-  header (date = this.state.date) {
+  header = (date = this.state.date) => {
     const startOfWeek = date.clone().startOf('week')
     const dayNames = []
     if (this.props.showWeekNumbers) {
@@ -209,27 +205,27 @@ export default createReactClass({
         </div>
       )
     }))
-  },
+  };
 
-  renderPreviousMonthButton () {
+  renderPreviousMonthButton = () => {
     if (!this.props.forceShowMonthNavigation && allDaysDisabledBefore(this.state.date, 'month', this.props)) {
       return
     }
     return <a
         className="react-datepicker__navigation react-datepicker__navigation--previous"
         onClick={this.decreaseMonth} />
-  },
+  };
 
-  renderNextMonthButton () {
+  renderNextMonthButton = () => {
     if (!this.props.forceShowMonthNavigation && allDaysDisabledAfter(this.state.date, 'month', this.props)) {
       return
     }
     return <a
         className="react-datepicker__navigation react-datepicker__navigation--next"
         onClick={this.increaseMonth} />
-  },
+  };
 
-  renderCurrentMonth (date = this.state.date) {
+  renderCurrentMonth = (date = this.state.date) => {
     var classes = ['react-datepicker__current-month']
     if (this.props.showYearDropdown) {
       classes.push('react-datepicker__current-month--hasYearDropdown')
@@ -242,9 +238,9 @@ export default createReactClass({
         {date.format(this.props.dateFormat)}
       </div>
     )
-  },
+  };
 
-  renderYearDropdown (overrideHide = false) {
+  renderYearDropdown = (overrideHide = false) => {
     if (!this.props.showYearDropdown || overrideHide) {
       return
     }
@@ -257,9 +253,9 @@ export default createReactClass({
           year={this.state.date.year()}
           scrollableYearDropdown={this.props.scrollableYearDropdown} />
     )
-  },
+  };
 
-  renderMonthDropdown (overrideHide = false) {
+  renderMonthDropdown = (overrideHide = false) => {
     if (!this.props.showMonthDropdown) {
       return
     }
@@ -270,9 +266,9 @@ export default createReactClass({
           onChange={this.changeMonth}
           month={this.state.date.month()} />
     )
-  },
+  };
 
-  renderTodayButton () {
+  renderTodayButton = () => {
     if (!this.props.todayButton) {
       return
     }
@@ -281,9 +277,9 @@ export default createReactClass({
         {this.props.todayButton}
       </div>
     )
-  },
+  };
 
-  renderMonths () {
+  renderMonths = () => {
     var monthList = []
     for (var i = 0; i < this.props.monthsShown; ++i) {
       var monthDate = this.state.date.clone().add(i, 'M')
@@ -329,7 +325,7 @@ export default createReactClass({
       )
     }
     return monthList
-  },
+  };
 
   render () {
     return (
@@ -343,4 +339,4 @@ export default createReactClass({
       </div>
     )
   }
-})
+}

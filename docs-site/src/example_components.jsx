@@ -1,5 +1,4 @@
-import React from 'react'
-import createReactClass from 'create-react-class'
+import React, { Component } from 'react'
 import hljs from 'highlight.js'
 import Default from './examples/default'
 import CodeExampleComponent from './code_example_component'
@@ -41,14 +40,12 @@ import RawChange from './examples/raw_change'
 import 'react-datepicker/dist/react-datepicker.css'
 import './style.scss'
 
-export default createReactClass({
-  displayName: 'exampleComponents',
-
+export default class exampleComponents extends Component {
   componentDidMount () {
     hljs.initHighlightingOnLoad()
-  },
+  }
 
-  examples: [
+  examples = [
     {
       title: 'Default',
       component: <Default />
@@ -185,17 +182,17 @@ export default createReactClass({
       title: 'Get raw input value on change',
       component: <RawChange/>
     }
-  ],
+  ];
 
-  renderExamples () {
+  renderExamples = () => {
     return this.examples.map((example, index) =>
       <CodeExampleComponent key={`example-${index}`} id={index} title={example.title}>
         {example.component}
       </CodeExampleComponent>
     )
-  },
+  };
 
-  renderLeftColumn () {
+  renderLeftColumn = () => {
     return this.examples.map((example, index) =>
       <li className="examples__navigation-item" key={`link-${index}`}>
         <a href={`#example-${index}`}>
@@ -203,9 +200,9 @@ export default createReactClass({
         </a>
       </li>
     )
-  },
+  }
 
-  render () {
+  render() {
     return <div>
       <h1>Examples</h1>
       <ul className="examples__navigation">
@@ -216,4 +213,4 @@ export default createReactClass({
       </div>
     </div>
   }
-})
+}

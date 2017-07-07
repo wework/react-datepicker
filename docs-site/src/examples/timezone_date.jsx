@@ -1,20 +1,15 @@
-import React from 'react'
-import createReactClass from 'create-react-class';
+import React, { Component } from 'react'
 import moment from 'moment'
 
 import DatePicker from 'react-datepicker'
 
-export default createReactClass({
-  displayName: 'Default',
+export default class Default extends Component {
+  state = {
+    startDate: null,
+    utcOffset: -4
+  };
 
-  getInitialState () {
-    return {
-      startDate: null,
-      utcOffset: -4
-    }
-  },
-
-  timezoneNames: [
+  timezoneNames = [
     { name: 'GMT+10', value: 10 },
     { name: 'GMT+8', value: 8 },
     { name: 'GMT+4', value: 4 },
@@ -24,28 +19,28 @@ export default createReactClass({
     { name: 'GMT-4', value: -4 },
     { name: 'GMT-8', value: -8 },
     { name: 'GMT-10', value: -10 }
-  ],
+  ];
 
-  handleChange (date) {
+  handleChange = (date) => {
     this.setState({
       startDate: date
     })
-  },
+  };
 
-  handleTmzChange (event) {
+  handleTmzChange = (event) => {
     this.setState({
       utcOffset: parseInt(event.target.value, 10)
     })
-  },
+  };
 
-  getOffsetLabel (tmz) {
+  getOffsetLabel = (tmz) => {
     var obj = this.timezoneNames.find(function (item) {
       return item.value === tmz
     })
     return (obj && obj.name) || ''
-  },
+  };
 
-  render () {
+  render() {
     var selected = this.state.startDate &&
                    this.state.startDate.clone().utcOffset(this.state.utcOffset)
     var utcText = this.getOffsetLabel(this.state.utcOffset)
@@ -88,4 +83,4 @@ export default createReactClass({
       </div>
     </div>
   }
-});
+}
