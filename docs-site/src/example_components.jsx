@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import hljs from 'highlight.js'
 import Default from './examples/default'
 import CodeExampleComponent from './code_example_component'
@@ -40,7 +41,7 @@ import RawChange from './examples/raw_change'
 import 'react-datepicker/dist/react-datepicker.css'
 import './style.scss'
 
-export default React.createClass({
+export default createReactClass({
   displayName: 'exampleComponents',
 
   componentDidMount () {
