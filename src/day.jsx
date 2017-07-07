@@ -1,4 +1,5 @@
 import moment from 'moment'
+import PropTypes from 'prop-types';
 import React from 'react'
 import classnames from 'classnames'
 import { isSameDay, isDayDisabled, isDayInRange } from './date_utils'
@@ -7,26 +8,26 @@ var Day = React.createClass({
   displayName: 'Day',
 
   propTypes: {
-    day: React.PropTypes.object.isRequired,
-    endDate: React.PropTypes.object,
-    highlightDates: React.PropTypes.array,
-    inline: React.PropTypes.bool,
-    month: React.PropTypes.number,
-    onClick: React.PropTypes.func,
-    onMouseEnter: React.PropTypes.func,
-    preSelection: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.arrayOf(React.PropTypes.object)
+    day: PropTypes.object.isRequired,
+    endDate: PropTypes.object,
+    highlightDates: PropTypes.array,
+    inline: PropTypes.bool,
+    month: PropTypes.number,
+    onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    preSelection: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object)
     ]),
-    selected: React.PropTypes.oneOfType([
-      React.PropTypes.object,
-      React.PropTypes.arrayOf(React.PropTypes.object)
+    selected: PropTypes.oneOfType([
+      PropTypes.object,
+      PropTypes.arrayOf(PropTypes.object)
     ]),
-    selectingDate: React.PropTypes.object,
-    selectsEnd: React.PropTypes.bool,
-    selectsStart: React.PropTypes.bool,
-    startDate: React.PropTypes.object,
-    utcOffset: React.PropTypes.number
+    selectingDate: PropTypes.object,
+    selectsEnd: PropTypes.bool,
+    selectsStart: PropTypes.bool,
+    startDate: PropTypes.object,
+    utcOffset: PropTypes.number
   },
 
   getDefaultProps () {

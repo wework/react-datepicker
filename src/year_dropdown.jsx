@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react'
 import YearDropdownOptions from './year_dropdown_options'
 import onClickOutside from 'react-onclickoutside'
@@ -8,12 +9,12 @@ var YearDropdown = React.createClass({
   displayName: 'YearDropdown',
 
   propTypes: {
-    dropdownMode: React.PropTypes.oneOf(['scroll', 'select']).isRequired,
-    maxDate: React.PropTypes.object,
-    minDate: React.PropTypes.object,
-    onChange: React.PropTypes.func.isRequired,
-    scrollableYearDropdown: React.PropTypes.bool,
-    year: React.PropTypes.number.isRequired
+    dropdownMode: PropTypes.oneOf(['scroll', 'select']).isRequired,
+    maxDate: PropTypes.object,
+    minDate: PropTypes.object,
+    onChange: PropTypes.func.isRequired,
+    scrollableYearDropdown: PropTypes.bool,
+    year: PropTypes.number.isRequired
   },
 
   getInitialState () {
